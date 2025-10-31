@@ -29,7 +29,7 @@ export default function ManageEventsPage() {
     const supabase = createClient();
     const channel = supabase
       .channel('realtime events')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'Events' }, (payload) => {
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'Events' }, (_payload) => {
         fetchEvents();
       })
       .subscribe();

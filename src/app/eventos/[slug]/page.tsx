@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { EventRegistrationForm } from "@/components/EventRegistrationForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -51,14 +52,17 @@ export default function EventPage() {
     }
     fetchData();
   }, [slug]);
+  
+  const scrollToForm = () => {
+    formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="w-16 h-16 border-4 border-gray-200 border-t-gray-600 rounded-full animate-spin"></div>
       </div>
-    );
-  }
+  ); }
 
   if (error || !event) {
     return (
@@ -66,14 +70,13 @@ export default function EventPage() {
         <div>
           <h2 className="text-2xl font-bold text-gray-800">Evento Não Encontrado</h2>
           <p className="text-gray-600 mt-2">O link pode estar quebrado ou o evento foi removido.</p>
-          <a href="/" className="mt-6 inline-block px-6 py-2 bg-gray-800 text-white rounded-lg font-medium hover:bg-gray-700 transition-colors">
+
+          <Link href="/" className="mt-6 inline-block px-6 py-2 bg-gray-800 text-white rounded-lg font-medium hover:bg-gray-700 transition-colors">
             Voltar ao Início
-          </a>
+          </Link>
         </div>
       </div>
-    );
-  }
-
+  ); }
   
   const date = new Date(event.event_date);
   const formattedDateRaw = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'full' }).format(date);
@@ -107,10 +110,10 @@ export default function EventPage() {
           <h1 className="text-5xl md:text-7xl font-black tracking-tight drop-shadow-lg">
             {event.name}
           </h1>
-          <p className="mt-4 text-lg md:text-xl text-white/90 drop-shadow-md max-w-2xl mx-auto">
+          <p className="mt-4 text-lg md:text-xl text-white/90 drop-shadow-md max-w-2xl mx-auto whitespace-pre-wrap">
             {event.description || "Junte-se a nós em um encontro especial para discutir o futuro da nossa cidade."}
           </p>
-    
+
         </div>
       </header>
 
@@ -119,17 +122,14 @@ export default function EventPage() {
         <div className="container mx-auto px-4 pb-20">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 max-w-6xl mx-auto">
             
-            {/* --- COLUNA ESQUERDA: Informações consolidadas --- */}
             <div className="lg:col-span-3">
               <Card className="shadow-xl border-0 rounded-2xl bg-white/80 backdrop-blur-sm p-2">
                 <CardContent className="p-6 space-y-6">
-                  {/* Countdown no topo */}
                   <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl p-6 text-center">
-                    <h3 className="font-bold mb-4">Countdown</h3>
-                    <EventCountdown targetDate={event.event_date} />
+                    <h3 className="font-bold mb-4">Faltam</h3>
+                    <EventCountdown eventDate={event.event_date} />
                   </div>
 
-                  {/* Detalhes do Evento */}
                   <div className="space-y-5 pt-4">
                     <div className="flex items-start gap-4">
                       <div className="p-3 bg-blue-100 rounded-xl"><Calendar className="h-6 w-6 text-blue-600" /></div>
@@ -153,7 +153,6 @@ export default function EventPage() {
               </Card>
             </div>
 
-            {/* --- COLUNA DIREITA: Formulário --- */}
             <div className="lg:col-span-2" ref={formRef}>
               <Card className="shadow-2xl border-0 rounded-2xl sticky top-6">
                 <CardHeader className="bg-gray-800 text-white text-center rounded-t-2xl">
@@ -164,10 +163,8 @@ export default function EventPage() {
                 </CardContent>
               </Card>
             </div>
-
           </div>
         </div>
       </main>
     </div>
-  );
-}
+); }

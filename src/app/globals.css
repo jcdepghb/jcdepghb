@@ -149,8 +149,7 @@
   50% {
     background-size: 200% 200%;
     background-position: right center;
-  }
-}
+} }
 
 .animate-gradient-x {
   animation: gradient-x 15s ease infinite;

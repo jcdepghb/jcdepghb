@@ -25,31 +25,28 @@ export function UpdatePasswordForm() {
 
   useEffect(() => {
     const supabase = createClient();
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, _session) => { // CORREÇÃO AQUI
       if (event === 'PASSWORD_RECOVERY') {
         setIsSessionReady(true);
     } });
 
     const checkSession = async () => {
-        const { data } = await supabase.auth.getSession();
-        if(data.session) {
-            setIsSessionReady(true);
-        } else {
-             setTimeout(() => {
-                if(window.location.hash && !isSessionReady) {
-                    setError("O link de recuperação de senha é inválido ou expirou. Por favor, solicite um novo.");
-                }
-             }, 1500);
-    }
-    };
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        setIsSessionReady(true);
+      } else {
+        setTimeout(() => {
+          if (window.location.hash && !isSessionReady) {
+            setError("O link de recuperação de senha é inválido ou expirou. Por favor, solicite um novo.");
+    } }, 1500); } };
     checkSession();
 
     return () => subscription.unsubscribe();
   }, [isSessionReady]);
 
   if (error) {
-     return (
-       <Card className="w-full max-w-sm">
+    return (
+      <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Erro</CardTitle>
         </CardHeader>
@@ -60,11 +57,11 @@ export function UpdatePasswordForm() {
           </Button>
         </CardContent>
       </Card>
-  ) }
+  ); }
 
   if (state?.success) {
-     return (
-       <Card className="w-full max-w-sm">
+    return (
+      <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Sucesso!</CardTitle>
         </CardHeader>
@@ -75,11 +72,11 @@ export function UpdatePasswordForm() {
           </Button>
         </CardContent>
       </Card>
-  ) }
+  ); }
 
   if (!isSessionReady && !error) {
-     return (
-       <Card className="w-full max-w-sm">
+    return (
+      <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Verificando...</CardTitle>
         </CardHeader>
@@ -87,7 +84,7 @@ export function UpdatePasswordForm() {
           <p className="text-sm text-muted-foreground">Aguarde enquanto validamos seu link de recuperação.</p>
         </CardContent>
       </Card>
-  ) }
+  ); }
 
   return (
     <Card className="w-full max-w-sm">

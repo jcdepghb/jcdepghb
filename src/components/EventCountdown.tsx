@@ -1,60 +1,59 @@
-// src/components/EventCountdown.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface EventCountdownProps {
-  // A propriedade agora se chama 'targetDate' para ser mais genérica
-  targetDate: string;
+  eventDate: string;
 }
 
-export function EventCountdown({ targetDate }: EventCountdownProps) {
-  const calculateTimeLeft = () => {
-    const difference = +new Date(targetDate) - +new Date();
-    let timeLeft = {
-      Dias: 0,
-      Horas: 0,
-      Minutos: 0,
-      Segundos: 0,
-    };
+const TimeUnit = ({ value, label }: { value: number; label: string }) => (
+  <div className="flex flex-col items-center">
+    <span className="text-4xl lg:text-5xl font-bold tracking-tighter">{String(value).padStart(2, '0')}</span>
+    <span className="text-xs uppercase tracking-widest opacity-75">{label}</span>
+  </div>
+);
+
+export function EventCountdown({ eventDate }: EventCountdownProps) {
+  const calculateTimeLeft = useCallback(() => {
+    const difference = +new Date(eventDate) - +new Date();
+    let timeLeft = { dias: 0, horas: 0, minutos: 0, segundos: 0 };
 
     if (difference > 0) {
       timeLeft = {
-        Dias: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        Horas: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        Minutos: Math.floor((difference / 1000 / 60) % 60),
-        Segundos: Math.floor((difference / 1000) % 60),
-      };
-    }
+        dias: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        horas: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutos: Math.floor((difference / 1000 / 60) % 60),
+        segundos: Math.floor((difference / 1000) % 60),
+    }; }
     return timeLeft;
-  };
+  }, [eventDate]);
 
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const [timeLeft, setTimeLeft] = useState({ dias: 0, horas: 0, minutos: 0, segundos: 0 });
 
   useEffect(() => {
-    // Atualiza o contador a cada segundo
+    setTimeLeft(calculateTimeLeft());
+
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [targetDate]);
+  }, [calculateTimeLeft]);
 
-  // Verifica se o tempo já esgotou
-  const isTimeUp = !Object.values(timeLeft).some((value) => value > 0);
+  const hasTimeLeft = Object.values(timeLeft).some(value => value > 0);
+
+  if (!hasTimeLeft) {
+    return <span className="text-xl font-bold text-center">O evento já começou!</span>;
+  }
 
   return (
-    <div className="flex items-center justify-center gap-2 md:gap-3">
-      {isTimeUp ? (
-        <span className="text-xl font-bold text-center">O evento já começou!</span>
-      ) : (
-        Object.entries(timeLeft).map(([interval, value]) => (
-          <div key={interval} className="flex flex-col items-center justify-center bg-white/20 p-3 rounded-lg min-w-[70px] text-center">
-            <span className="text-3xl font-bold tracking-tighter">{String(value).padStart(2, '0')}</span>
-            <span className="text-xs uppercase opacity-75">{interval}</span>
-          </div>
-        ))
-      )}
+    <div className="flex items-center justify-around w-full max-w-sm mx-auto">
+      <TimeUnit value={timeLeft.dias} label="Dias" />
+      <span className="text-4xl font-light -mt-4">:</span>
+      <TimeUnit value={timeLeft.horas} label="Horas" />
+      <span className="text-4xl font-light -mt-4">:</span>
+      <TimeUnit value={timeLeft.minutos} label="Min" />
+      <span className="text-4xl font-light -mt-4">:</span>
+      <TimeUnit value={timeLeft.segundos} label="Seg" />
     </div>
-  );
-}
+); }

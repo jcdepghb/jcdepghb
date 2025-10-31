@@ -412,16 +412,16 @@ export async function deleteUserByAdmin(userId: string, authId: string | null): 
   await supabaseAdmin.from('EventRegistrations').update({ leader_id: null }).eq('leader_id', userId);
 
   if (authId) {
-      const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(authId);
-      if (authError && authError.message !== 'User not found') {
-          console.error("Erro ao deletar usuário da autenticação:", authError);
-          return { success: false, message: `Falha ao remover autenticação do usuário: ${authError.message}` };
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(authId);
+    if (error && error.message !== 'User not found') {
+        console.error("Erro ao deletar usuário da autenticação:", error);
+        return { success: false, message: `Falha ao remover autenticação do usuário: ${error.message}` };
   } }
 
-  const { error: dbError } = await supabaseAdmin.from('Users').delete().eq('id', userId);
-  if (dbError) {
-      console.error("Erro ao deletar perfil do usuário:", dbError);
-      return { success: false, message: `Falha ao remover perfil do usuário: ${dbError.message}` };
+  const { error } = await supabaseAdmin.from('Users').delete().eq('id', userId);
+  if (error) {
+      console.error("Erro ao deletar perfil do usuário:", error);
+      return { success: false, message: `Falha ao remover perfil do usuário: ${error.message}` };
   }
 
   revalidatePath("/admin/usuarios");
