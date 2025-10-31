@@ -1,4 +1,4 @@
-# Juntos por Mais - Plataforma Estevão Reis
+# Juntos por Mais - Plataforma
 
 Juntos por Mais é uma aplicação full-stack construída com Next.js e Supabase. Ela serve como uma plataforma completa para a gestão de uma rede de apoiadores e líderes, com múltiplos níveis de acesso, painéis de controle interativos, gerenciamento de eventos e ferramentas de análise de dados.
 
