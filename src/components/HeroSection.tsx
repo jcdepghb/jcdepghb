@@ -104,7 +104,7 @@ export function HeroSection() {
                   variant="outline" 
                   className="bg-transparent text-white border-white/50 hover:bg-white/20 hover:text-white transition-colors duration-300"
                 >
-                    Conheça Estevão Reis
+                    Dolor sit
                     <ChevronRight className="ml-2 h-4 w-4" />
                 </Button>
              </a>
