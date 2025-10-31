@@ -156,7 +156,7 @@ export default function EventPage() {
             <div className="lg:col-span-2" ref={formRef}>
               <Card className="shadow-2xl border-0 rounded-2xl sticky top-6">
                 <CardHeader className="bg-gray-800 text-white text-center rounded-t-2xl">
-                  <CardTitle className="text-2xl font-bold">Participe</CardTitle>
+                  <CardTitle className="text-2xl font-bold">Esperamos por você!</CardTitle>
                 </CardHeader>
                 <CardContent className="p-6">
                   <EventRegistrationForm eventId={event.id} regions={regions} />

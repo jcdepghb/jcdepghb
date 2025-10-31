@@ -25,7 +25,7 @@ export function UpdatePasswordForm() {
 
   useEffect(() => {
     const supabase = createClient();
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, _session) => { // CORREÇÃO AQUI
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, _session) => {
       if (event === 'PASSWORD_RECOVERY') {
         setIsSessionReady(true);
     } });
