@@ -129,7 +129,7 @@ export function HeroSection() {
                     <p className="mt-1 text-xs text-slate-400">{stat.label}</p>
                 </div>
                 ))}
-            </div>
+            </div>  
 
             <a href="#sobre">
                 <Button 
