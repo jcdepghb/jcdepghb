@@ -36,7 +36,6 @@ export default function HomePage() {
 
   return (
     <>
-      <HeroSection />
       <CTASection leaders={leaders} regions={regions} leaderRefId={leaderRefId} />
     </>
 ); }
